@@ -1,0 +1,29 @@
+from django.db import models
+from autoslug import AutoSlugField
+
+# Create your models here.
+class ProductItem(models.Model):
+    product = models.CharField(max_length=30,blank=False)
+
+    def __str__(self):
+        return self.product
+    
+
+class Product_details(models.Model):
+    def namFile(instance, filename):
+        return '/'.join(['Prodcut_images',str(instance.product_title), filename])
+        
+    product_name = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
+
+    product_image = models.ImageField(upload_to=namFile,blank=False,null=True)
+    product_img1 = models.ImageField(upload_to=namFile,blank=False,null=True)
+    product_img2 = models.ImageField(upload_to=namFile,blank=False,null=True)
+    product_img3 = models.ImageField(upload_to=namFile,blank=False,null=True)
+
+    product_title = models.CharField(max_length=300,blank=False)
+    slug = AutoSlugField(populate_from='product_title',unique=True,null=True)
+    short_description = models.CharField(max_length=500,blank=True)
+    long_description = models.TextField(blank=False)
+    product_price = models.IntegerField(blank=False)
+    on_sale = models.BooleanField(default=False)
+    sale_price = models.CharField(max_length=20,blank=True)
