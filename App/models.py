@@ -1,5 +1,6 @@
 from django.db import models
 from autoslug import AutoSlugField
+from django.contrib.auth.models import User
 
 # Create your models here.
 class ProductItem(models.Model):
@@ -16,14 +17,21 @@ class Product_details(models.Model):
     product_name = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
 
     product_image = models.ImageField(upload_to=namFile,blank=False,null=True)
-    product_img1 = models.ImageField(upload_to=namFile,blank=False,null=True)
-    product_img2 = models.ImageField(upload_to=namFile,blank=False,null=True)
-    product_img3 = models.ImageField(upload_to=namFile,blank=False,null=True)
+    product_img1 = models.ImageField(upload_to=namFile,blank=True,null=True)
+    product_img2 = models.ImageField(upload_to=namFile,blank=True,null=True)
+    product_img3 = models.ImageField(upload_to=namFile,blank=True,null=True)
 
     product_title = models.CharField(max_length=300,blank=False)
     slug = AutoSlugField(populate_from='product_title',unique=True,null=True)
     short_description = models.CharField(max_length=500,blank=True)
     long_description = models.TextField(blank=False)
+    stock = models.IntegerField(blank=True,null=True)
     product_price = models.IntegerField(blank=False)
-    on_sale = models.BooleanField(default=False)
+    on_sale = models.BooleanField(default=False,blank=True, null=True)
     sale_price = models.CharField(max_length=20,blank=True)
+
+
+
+class AddToCart(models.Model):
+    product=models.ForeignKey(Product_details,on_delete=models.CASCADE)
+    quantity = models.IntegerField()

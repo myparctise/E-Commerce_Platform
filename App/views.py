@@ -1,9 +1,11 @@
+from http.client import HTTPResponse
 from django.shortcuts import render,redirect
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from .models import Product_details,ProductItem
+from .models import Product_details,ProductItem,AddToCart
 from .serializer import Product_Serializer,show_product_serializer
+from django.http import Http404
 
 
 
@@ -87,5 +89,22 @@ def home_Page(request):
         data = Product_details.objects.all()
         return render(request,'index.html',{'data':data})
 
-def Products(request):
-    return render(request,'single-product.html')
+def Products(request,slug=None):
+    if slug:
+        data = Product_details.objects.get(slug = slug)
+        product_data = Product_details.objects.all()
+        return render(request,'single-product.html',{'d':data,"database_data":product_data})
+
+    return Http404("Page not found")
+
+def Add_to_cart(request):
+    if request.method == "POST":
+        ab = AddToCart(product_id=request.POST['pid'],quantity=request.POST['quantity'])
+        ab.save()
+    product = AddToCart.objects.filter()
+    return render(request,"cart.html",{"cart_product":product})
+
+def RemoveCart(request,pk):
+    ab = AddToCart.objects.get(id=pk)
+    ab.delete()
+    return redirect('/mycart/')

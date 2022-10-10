@@ -27,6 +27,7 @@ router.register("Register_Product",views.UserProduct,basename='E-Commerce-Produc
 urlpatterns = [
     path('api/',include(router.urls)),      # this path deal wit api router links
     path('',views.home_Page,name='home'),
-    path('Products',views.Products,name='products'),
-    # path('')
+    path('Products/<str:slug>',views.Products,name='products'),
+    path('mycart/',views.Add_to_cart,name='add_cart'),
+    path('remove_cart/<int:pk>',views.RemoveCart,name='remove_cart')
 ]

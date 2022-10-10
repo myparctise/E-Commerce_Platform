@@ -13,7 +13,7 @@
     <title>Pixie - Product Detail</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
 
     <!-- Additional CSS Files -->
@@ -25,6 +25,11 @@
 Tooplate 2114 Pixie
 https://www.tooplate.com/view/2114-pixie
 -->
+<style>
+  .custom-margin-price{
+    margin-left:10px;
+  }
+</style>
   </head>
 
   <body>
@@ -50,7 +55,7 @@ https://www.tooplate.com/view/2114-pixie
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="products.html">Products
@@ -76,42 +81,65 @@ https://www.tooplate.com/view/2114-pixie
           <div class="col-md-12">
             <div class="section-heading">
               <div class="line-dec"></div>
-              <h1>Single Product</h1>
+              <h1>{{d.product_name}}</h1>
             </div>
           </div>
           <div class="col-md-6">
             <div class="product-slider">
               <div id="slider" class="flexslider">
                 <ul class="slides">
+                  {% if d.product_image %}
                   <li>
-                    <img src="static/assets/images/big-01.jpg" />
+                    <img src="{{d.product_image.url}}" />
                   </li>
+                  {% endif %}
+                  {% if d.product_img1 %}
                   <li>
-                    <img src="static/assets/images/big-02.jpg" />
+                    <img src="{{d.product_img1.url}}" />
                   </li>
+                  {% endif %}
+                  
+                  {% if d.product_img2 %}
                   <li>
-                    <img src="static/assets/images/big-03.jpg" />
+                    <img src="{{d.product_img2.url}}" />
                   </li>
+                  {% endif %}
+                  
+                  {% if d.product_img3 %}
                   <li>
-                    <img src="static/assets/images/big-04.jpg" />
+                    <img src="{{d.product_img3.url}}" />
                   </li>
+                  {% endif %}
+                  
+                  
                   <!-- items mirrored twice, total of 12 -->
                 </ul>
               </div>
               <div id="carousel" class="flexslider">
                 <ul class="slides">
+                  {% if d.product_image %}
                   <li>
-                    <img src="static/assets/images/thumb-01.jpg" />
+                    <img src="{{d.product_image.url}}" />
                   </li>
+                  {% endif %}
+                  {% if d.product_img1 %}
                   <li>
-                    <img src="static/assets/images/thumb-02.jpg" />
+                    <img src="{{d.product_img1.url}}" />
                   </li>
+                  {% endif %}
+                  
+                  {% if d.product_img2 %}
                   <li>
-                    <img src="static/assets/images/thumb-03.jpg" />
+                    <img src="{{d.product_img2.url}}" />
                   </li>
+                  {% endif %}
+                  
+                  {% if d.product_img3 %}
                   <li>
-                    <img src="static/assets/images/thumb-04.jpg" />
+                    <img src="{{d.product_img3.url}}" />
                   </li>
+                  {% endif %}
+                  
                   <!-- items mirrored twice, total of 12 -->
                 </ul>
               </div>
@@ -119,18 +147,26 @@ https://www.tooplate.com/view/2114-pixie
           </div>
           <div class="col-md-6">
             <div class="right-content">
-              <h4>Single Product Name</h4>
-              <h6>$55.00</h6>
-              <p>Proin commodo, diam a ultricies sagittis, erat odio rhoncus metus, eu feugiat lorem lacus aliquet arcu. Curabitur in gravida nisi, non placerat nibh. Praesent sit amet diam ultrices, commodo turpis id, dignissim leo. Suspendisse mauris massa, porttitor non fermentum vel, ullamcorper scelerisque velit. </p>
-              <span>7 left on stock</span>
-              <form action="" method="get">
+              <h4>{{d.product_title}}</h4>
+              {% if d.on_sale %}
+              <h6>₹ {{d.sale_price}}<small><s class="custom-margin-price">₹ {{d.product_price}}</s></small></h6>
+              {% else %}
+              <h6>₹ {{d.product_price}}</h6>
+              {% endif %}
+              <p>{{d.long_description}}</p>
+              <span>{{d.stock}} left on stock</span>
+              <form action="/mycart/" method="post">{% csrf_token %}
                 <label for="quantity">Quantity:</label>
                 <input name="quantity" type="quantity" class="quantity-text" id="quantity" 
                 	onfocus="if(this.value == '1') { this.value = ''; }" 
                     onBlur="if(this.value == '') { this.value = '1';}"
                     value="1">
-                <input type="submit" class="button" value="Order Now!">
+                    <input type="hidden" value="{{d.id}}" name="pid">
+                <input type="button" class="button" value="Buy Now">
+                <input type="submit" class="button" value="Add to Cart">
+                
               </form>
+           
               <div class="down-content">
                 <div class="categories">
                   <h6>Category: <span><a href="#">Pants</a>,<a href="#">Women</a>,<a href="#">Lifestyle</a></span></h6>
@@ -159,14 +195,16 @@ https://www.tooplate.com/view/2114-pixie
           </div>
           <div class="col-md-12">
             <div class="owl-carousel owl-theme">
-              <a href="single-product.html">
+              <{% for i in database_data %}
+              <a href="{% url 'products' i.slug %}">
                 <div class="featured-item">
-                  <img src="static/assets/images/item-01.jpg" alt="Item 1">
-                  <h4>Proin vel ligula</h4>
-                  <h6>$15.00</h6>
+                  <img src="{{i.product_image.url}}" alt="Item 1">
+                  <h4>{{i.product_title}}</h4>
+                  <h6>Rs {{i.product_price}}</h6>
                 </div>
               </a>
-              <a href="single-product.html">
+              {% endfor %}
+              <!-- <a href="single-product.html">
                 <div class="featured-item">
                   <img src="static/assets/images/item-02.jpg" alt="Item 2">
                   <h4>Erat odio rhoncus</h4>
@@ -221,7 +259,7 @@ https://www.tooplate.com/view/2114-pixie
                   <h4>Cras tempus</h4>
                   <h6>$95.00</h6>
                 </div>
-              </a>
+              </a> -->
             </div>
           </div>
         </div>
@@ -325,15 +363,15 @@ https://www.tooplate.com/view/2114-pixie
 
 
     <!-- Bootstrap core JavaScript -->
-    <script src="static/vendor/jquery/jquery.min.js"></script>
-    <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 
     <!-- Additional Scripts -->
-    <script src="static/assets/js/custom.js"></script>
-    <script src="static/assets/js/owl.js"></script>
-    <script src="static/assets/js/isotope.js"></script>
-    <script src="static/assets/js/flex-slider.js"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/owl.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.js' %}"></script>
+    <script src="{% static 'assets/js/flex-slider.js' %}"></script>
 
 
     <script language = "text/Javascript"> 
