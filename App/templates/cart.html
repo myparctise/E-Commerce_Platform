@@ -312,6 +312,7 @@ var fadeTime = 300;
 
 /* Assign actions */
 
+
   $('.product-quantity input').change( function() {
   updateQuantity(this);
   
@@ -386,6 +387,12 @@ function removeItem(removeButton)
     recalculateCart();
   });
 }     
+</script>
+
+<script>
+$(document).ready(function(){
+  updateQuantity(".product-quantity input");
+})
 </script>
 
 

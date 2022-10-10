@@ -99,8 +99,14 @@ def Products(request,slug=None):
 
 def Add_to_cart(request):
     if request.method == "POST":
-        ab = AddToCart(product_id=request.POST['pid'],quantity=request.POST['quantity'])
-        ab.save()
+        try:
+            ab = AddToCart.objects.get(product_id = request.POST['pid'])
+            ab.quantity += int(request.POST['quantity'])
+            ab.save()
+
+        except:
+            ab = AddToCart(product_id=request.POST['pid'],quantity=request.POST['quantity'])
+            ab.save()
     product = AddToCart.objects.filter()
     return render(request,"cart.html",{"cart_product":product})
 
