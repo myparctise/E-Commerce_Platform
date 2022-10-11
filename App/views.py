@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from .models import Product_details,ProductItem,AddToCart
 from .serializer import Product_Serializer,show_product_serializer
 from django.http import Http404
+from django.db.models import Sum
 
 
 
@@ -110,7 +111,12 @@ def Add_to_cart(request):
     product = AddToCart.objects.filter()
     pro_id = product.values('product_id')
     print(pro_id)
-    pro_price = Product_details.objects.filter(id__in=product)
+    pro_price = Product_details.objects.filter(id__in=pro_id).aggregate(Sum('product_price'))
+
+    print(pro_price)
+    tot_price = pro_price['product_price__sum']
+    print(tot_price)
+    
     
     return render(request,"cart.html",{"cart_product":product})
 
