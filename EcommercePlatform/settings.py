@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'App',
     "rest_framework",
     'django_extensions',
+    'mathfilters'
 
 ]
 

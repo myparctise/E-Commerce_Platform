@@ -1,5 +1,6 @@
 
 <!DOCTYPE html>
+{% load mathfilters %}
 <html>
 <head>
 <title>Page Title</title>
@@ -248,7 +249,8 @@ label {
         Remove
       </a>
     </div>
-    <div class="product-line-price">{{details.product.product_price}}</div>
+    <div class="product-line-price"> {{details.product.product_price|mul:details.quantity}}</div>
+    
   </div>
   {% empty %}
   <h6>Your cart is empty</h6>
@@ -333,6 +335,7 @@ function recalculateCart()
   /* Sum up row totals */
   $('.product').each(function () {
     var x = subtotal += parseFloat($(this).children('.product-line-price').text());
+   // alert(x)
    
   });
   
@@ -354,6 +357,7 @@ function recalculateCart()
     }
     $('.totals-value').fadeIn(fadeTime);
   });
+ 
 }
 
 
@@ -387,12 +391,30 @@ function removeItem(removeButton)
     recalculateCart();
   });
 }     
-</script>
+</script> 
 
 <script>
 $(document).ready(function(){
-  updateQuantity(".product-quantity input");
+  // updateQuantity(".product-quantity input");
+  // var price = $(".product-price").text()
+  // alert('gfedf');
+  //$(".shopping-cart input[type=hidden]").each( function(){
+    //alert($(this).val());
+  //});
+  // alert(price)
+
+
 })
+</script>
+
+<script>
+  $('.product-quantity input').keydown(function(e){
+    var Key = e.keyCode || e.charCode;
+    if (Key == 8 || Key == 46 ){
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  })
 </script>
 
 

@@ -108,6 +108,10 @@ def Add_to_cart(request):
             ab = AddToCart(product_id=request.POST['pid'],quantity=request.POST['quantity'])
             ab.save()
     product = AddToCart.objects.filter()
+    pro_id = product.values('product_id')
+    print(pro_id)
+    pro_price = Product_details.objects.filter(id__in=product)
+    
     return render(request,"cart.html",{"cart_product":product})
 
 def RemoveCart(request,pk):
