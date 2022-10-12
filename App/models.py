@@ -1,6 +1,12 @@
 from django.db import models
 from autoslug import AutoSlugField
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AbstractUser
+
+
+class MyUser(AbstractUser):
+    mobile_no = models.IntegerField(blank=True, null=True)
+    gender = models.CharField(max_length=10,blank=True,null=True)
+
 
 # Create your models here.
 class ProductItem(models.Model):
@@ -15,7 +21,7 @@ class Product_details(models.Model):
         return '/'.join(['Prodcut_images',str(instance.product_title), filename])
         
     product_name = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
-
+    
     product_image = models.ImageField(upload_to=namFile,blank=False,null=True)
     product_img1 = models.ImageField(upload_to=namFile,blank=True,null=True)
     product_img2 = models.ImageField(upload_to=namFile,blank=True,null=True)
@@ -30,8 +36,10 @@ class Product_details(models.Model):
     on_sale = models.BooleanField(default=False,blank=True, null=True)
     sale_price = models.CharField(max_length=20,blank=True)
 
+    
 
 
 class AddToCart(models.Model):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE,null=True)
     product=models.ForeignKey(Product_details,on_delete=models.CASCADE)
     quantity = models.IntegerField()

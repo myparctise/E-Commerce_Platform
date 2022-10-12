@@ -251,11 +251,18 @@ label {
     </div>
     <div class="product-line-price"> {{details.product.product_price|mul:details.quantity}}</div>
     
+    
   </div>
+  {% with details.product.product_price|mul:details.quantity as firstname %}
+    <h1>{{firstname}}</h1>
+    {% endwith %}
   {% empty %}
   <h6>Your cart is empty</h6>
   <a href="/" class="button">Shop Now</a>
   {% endfor %}
+
+
+
 
   <!-- <div class="product">
     <div class="product-image">

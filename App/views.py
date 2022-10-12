@@ -3,11 +3,13 @@ from django.shortcuts import render,redirect
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from .models import Product_details,ProductItem,AddToCart
+from .models import Product_details,ProductItem,AddToCart,MyUser
 from .serializer import Product_Serializer,show_product_serializer
 from django.http import Http404
 from django.db.models import Sum
-
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate,login,logout
 
 
 
@@ -88,13 +90,16 @@ class UserProduct(viewsets.ViewSet):
 def home_Page(request):
     if request.method == 'GET':
         data = Product_details.objects.all()
+        # print(request.user.id)
         return render(request,'index.html',{'data':data})
 
 def Products(request,slug=None):
     if slug:
         data = Product_details.objects.get(slug = slug)
         product_data = Product_details.objects.all()
-        return render(request,'single-product.html',{'d':data,"database_data":product_data})
+        print(request.user.id,"----------")
+        id = request.user.id
+        return render(request,'single-product.html',{'d':data,"database_data":product_data,"user_id":id})
 
     return Http404("Page not found")
 
@@ -106,7 +111,7 @@ def Add_to_cart(request):
             ab.save()
 
         except:
-            ab = AddToCart(product_id=request.POST['pid'],quantity=request.POST['quantity'])
+            ab = AddToCart(user_id=request.POST['ui'],product_id=request.POST['pid'],quantity=request.POST['quantity'])
             ab.save()
     product = AddToCart.objects.filter()
     pro_id = product.values('product_id')
@@ -124,3 +129,83 @@ def RemoveCart(request,pk):
     ab = AddToCart.objects.get(id=pk)
     ab.delete()
     return redirect('/mycart/')
+
+#Authentication System
+
+def RegisterUser(request):
+    if request.method == "GET":
+        return render(request,'register.html')
+    elif request.method == "POST":
+        first_name = request.POST.get('firstname')
+        last_name = request.POST['lastname']
+        email = request.POST['email']
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirmpassword']
+        gender = request.POST['radiogroup1']
+        mobile_number = request.POST['mobile_number']
+
+        if password == confirm_password:
+            if MyUser.objects.filter(username = username).exists():
+                messages.info(request,"Username is already exists")
+                return redirect('register')
+            elif MyUser.objects.filter(email=email).exists():
+                messages.info(request,"Email is already exists")
+                return redirect('register')
+            elif MyUser.objects.filter(mobile_no = mobile_number).exists():
+                messages.info(request,"mobile_number is already exists")
+                return redirect('register')
+            else:
+                data = MyUser.objects.create_user(first_name = first_name, last_name = last_name,
+                                                email = email, username = username, password = password,
+                                                gender = gender, mobile_no = mobile_number)
+                data.save()
+                return redirect('login')
+        else:
+            messages.info(request,"Password is not correct")
+            return redirect('register')
+
+# This fucntion for login
+def login_user(request):
+    if request.method =="GET":
+        return render(request,"login.html")
+    elif request.method == "POST":
+        try:
+            data = request.POST['username']
+            password = request.POST['password']
+        except Exception as e :
+            print(e)
+        
+
+        try: 
+            user = MyUser.objects.get(username=data)
+        except:
+            try:
+                user = MyUser.objects.get(email=data)
+            except:
+                try:
+                    user = MyUser.objects.get(mobile_no=data)
+                except:
+                    messages.info(request,"Invalid info")
+                    return redirect('login')
+
+
+        if user is not None:
+                if user.check_password(password):
+                    login(request,user)
+                    return redirect('home')
+                else:
+                    messages.info(request,"Invalid info")
+                    return redirect('login')
+        else:
+            messages.info(request,"Invalid info")
+            return redirect('login')
+        
+        
+
+
+                
+            
+def Logout(request):
+    logout(request)
+    return redirect('login')

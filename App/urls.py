@@ -29,5 +29,8 @@ urlpatterns = [
     path('',views.home_Page,name='home'),
     path('Products/<str:slug>',views.Products,name='products'),
     path('mycart/',views.Add_to_cart,name='add_cart'),
-    path('remove_cart/<int:pk>',views.RemoveCart,name='remove_cart')
+    path('remove_cart/<int:pk>',views.RemoveCart,name='remove_cart'),
+    path('Reigstration-forms',views.RegisterUser,name='register'),
+    path('Sign-in-page',views.login_user,name='login'),
+    path('log-out',views.Logout,name='log'),
 ]

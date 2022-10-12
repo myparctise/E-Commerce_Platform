@@ -160,7 +160,18 @@ https://www.tooplate.com/view/2114-pixie
                 	onfocus="if(this.value == '1') { this.value = ''; }" 
                     onBlur="if(this.value == '') { this.value = '1';}"
                     value="1">
+
+                    {% if user.is_authenticated %}
+                    <input type="hidden" value="{{user_id}}" name="ui">
                     <input type="hidden" value="{{d.id}}" name="pid">
+
+                    {% else %}
+                    
+
+                    <input type="hidden" value="{{d.id}}" name="pid">
+                    {% endif %}
+
+                    
                 <input type="button" class="button" value="Buy Now">
                 <input type="submit" class="button" value="Add to Cart">
                 
