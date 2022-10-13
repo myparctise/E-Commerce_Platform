@@ -85,9 +85,6 @@ class UserProduct(viewsets.ViewSet):
 
 # Template Part start
 
-# def start_func(request):
-#     if request.method == "GET":
-#         return redirect('home')
 
 def home_Page(request):
     if request.method == 'GET':
