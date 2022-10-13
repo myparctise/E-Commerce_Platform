@@ -10,6 +10,8 @@ from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+from django.core.paginator import Paginator
+
 
 
 
@@ -96,7 +98,7 @@ def home_Page(request):
 def Products(request,slug=None):
     if slug:
         data = Product_details.objects.get(slug = slug)
-        product_data = Product_details.objects.all()
+        product_data = Product_details.objects.filter(product_name_id=data.product_name.id)[0:4]
         print(request.user.id,"----------")
         id = request.user.id
         return render(request,'single-product.html',{'d':data,"database_data":product_data,"user_id":id})
@@ -106,14 +108,14 @@ def Products(request,slug=None):
 def Add_to_cart(request):
     if request.method == "POST":
         try:
-            ab = AddToCart.objects.get(product_id = request.POST['pid'])
+            ab = AddToCart.objects.get(product_id = request.POST['pid'],user_id=request.POST['ui'])
             ab.quantity += int(request.POST['quantity'])
             ab.save()
 
         except:
             ab = AddToCart(user_id=request.POST['ui'],product_id=request.POST['pid'],quantity=request.POST['quantity'])
             ab.save()
-    product = AddToCart.objects.filter()
+    product = AddToCart.objects.filter(user_id = request.user.id).order_by('-id')
     pro_id = product.values('product_id')
     print(pro_id)
     pro_price = Product_details.objects.filter(id__in=pro_id).aggregate(Sum('product_price'))
@@ -201,11 +203,18 @@ def login_user(request):
             messages.info(request,"Invalid info")
             return redirect('login')
         
-        
-
-
                 
             
 def Logout(request):
     logout(request)
     return redirect('login')
+
+def All_products_data(request):
+    if request.method == "GET":
+        data = Product_details.objects.all()
+        paginator = Paginator(data, 2) # Show 25 contacts per page.
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        return render(request,"products.html",{"data":page_obj})

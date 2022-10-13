@@ -7,7 +7,7 @@ jQuery( document ).ready(function( $ ) {
 		$('.owl-carousel').owlCarousel({
 		    items:4,
 		    lazyLoad:true,
-		    loop:true,
+		    loop:false,
 		    dots:true,
 		    margin:20,
 		    responsiveClass:true,

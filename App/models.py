@@ -36,6 +36,9 @@ class Product_details(models.Model):
     on_sale = models.BooleanField(default=False,blank=True, null=True)
     sale_price = models.CharField(max_length=20,blank=True)
 
+    def __str__(self):
+        return self.product_title 
+
     
 
 
@@ -43,3 +46,6 @@ class AddToCart(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE,null=True)
     product=models.ForeignKey(Product_details,on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    def __str__(self):
+        return self.user.username + ' ' + str(self.quantity) + ' ' + self.product.product_title
+    

@@ -252,10 +252,9 @@ label {
     <div class="product-line-price"> {{details.product.product_price|mul:details.quantity}}</div>
     
     
+    
+    
   </div>
-  {% with details.product.product_price|mul:details.quantity as firstname %}
-    <h1>{{firstname}}</h1>
-    {% endwith %}
   {% empty %}
   <h6>Your cart is empty</h6>
   <a href="/" class="button">Shop Now</a>
@@ -287,19 +286,19 @@ label {
   <div class="totals">
     <div class="totals-item">
       <label>Subtotal</label>
-      <div class="totals-value" id="cart-subtotal">71.97</div>
+      <div class="totals-value" id="cart-subtotal"></div>
     </div>
     <div class="totals-item">
       <label>Tax (5%)</label>
-      <div class="totals-value" id="cart-tax">3.60</div>
+      <div class="totals-value" id="cart-tax"></div>
     </div>
     <div class="totals-item">
       <label>Shipping</label>
-      <div class="totals-value" id="cart-shipping">15.00</div>
+      <div class="totals-value" id="cart-shipping"></div>
     </div>
     <div class="totals-item totals-item-total">
       <label>Grand Total</label>
-      <div class="totals-value" id="cart-total">90.57</div>
+      <div class="totals-value" id="cart-total"></div>
     </div>
   </div>
       
@@ -400,19 +399,6 @@ function removeItem(removeButton)
 }     
 </script> 
 
-<script>
-$(document).ready(function(){
-  // updateQuantity(".product-quantity input");
-  // var price = $(".product-price").text()
-  // alert('gfedf');
-  //$(".shopping-cart input[type=hidden]").each( function(){
-    //alert($(this).val());
-  //});
-  // alert(price)
-
-
-})
-</script>
 
 <script>
   $('.product-quantity input').keydown(function(e){
@@ -424,5 +410,27 @@ $(document).ready(function(){
   })
 </script>
 
+<script>
+
+  $(document).ready(function(){
+   
+    
+
+   // var tot = 0;
+      // Loop through each div element with the class box
+      $(".product-quantity input").each(function(){
+       
+             updateQuantity(this);
+      })
+          // Test if the div element is empty
+       //   console.log($(this).text())
+         // tot += tot + parseInt($(this).text())
+          
+    
+      
+      //console.log('total : ' + tot)
+      //$('#cart-subtotal').html(tot)
+  });
+  </script>
 
 </html>

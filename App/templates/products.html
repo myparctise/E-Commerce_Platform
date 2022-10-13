@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,16 +10,20 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
+
     <title>Pixie - Products</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">
 
 
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/tooplate-main.css">
-    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/tooplate-main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
 <!--
 Tooplate 2114 Pixie
 https://www.tooplate.com/view/2114-pixie
@@ -41,17 +46,17 @@ https://www.tooplate.com/view/2114-pixie
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="#"><img src="assets/images/header-logo.png" alt=""></a>
+        <a class="navbar-brand" href="#"><img src="{% static 'assets/images/header-logo.png' %}" alt=""></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="{% url "home" %}">Home</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="products.html">Products
+              <a class="nav-link" href="{% url 'all_products' %}">Products
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -90,18 +95,20 @@ https://www.tooplate.com/view/2114-pixie
     </div>
   
     <div class="featured container no-gutter">
-
+        
         <div class="row posts">
-            <div id="1" class="item new col-md-4">
-              <a href="single-product.html">
-                <div class="featured-item">
-                  <img src="assets/images/product-01.jpg" alt="">
-                  <h4>Proin vel ligula</h4>
-                  <h6>$15.00</h6>
+          {% for object in data %}
+            <div id="1" class="item new col-md-4"  style="height:380px;">
+              <a href="{% url 'products' object.slug %}">
+                <div class="featured-item" style="min-height:360px;">
+                  <img src="{{object.product_image.url}}"  style="max-height:240px;"  >
+                  <h4>{{object.product_title|slice:34}}....</h4>
+                  <h6>Rs {{object.product_price}}</h6>
                 </div>
               </a>
             </div>
-            <div id="2" class="item high col-md-4">
+        {% endfor %}
+            {% comment %} <div id="2" class="item high col-md-4">
               <a href="single-product.html">
                 <div class="featured-item">
                   <img src="assets/images/product-02.jpg" alt="">
@@ -172,24 +179,48 @@ https://www.tooplate.com/view/2114-pixie
                   <h6>$95.00</h6>
                 </div>
               </a>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
-
     <div class="page-navigation">
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <ul>
-              <li class="current-page"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+          <div class="custom-page col-md-12">
+    
+    {% if data.has_other_pages %}
+  <ul class="">
+    {% if data.has_previous %}
+      <li><a class=" btn-danger" href="?page={{ data.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li style="display:none;" class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in data.paginator.page_range %}
+      {% if data.number == i %}
+        <li class="btn btn-primary"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a class="" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if data.has_next %}
+      <li><a class=" btn-danger" href="?page={{ data.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li style="display:none;" class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+
+  
+
+     <!-- {% for contact in data %}
+    {# Each "contact" is a Contact model object. #}
+    {{ contact.full_name|upper }}<br>
+{% endfor %}  -->
+
+
     <!-- Featred Page Ends Here -->
 
 
@@ -288,14 +319,15 @@ https://www.tooplate.com/view/2114-pixie
 
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- Additional Scripts -->
-    <script src="assets/js/custom.js"></script>
-    <script src="assets/js/owl.js"></script>
-    <script src="assets/js/isotope.js"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/owl.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.js' %}"></script>
 
 
     <script language = "text/Javascript"> 

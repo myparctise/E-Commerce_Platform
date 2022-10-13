@@ -33,4 +33,5 @@ urlpatterns = [
     path('Reigstration-forms',views.RegisterUser,name='register'),
     path('Sign-in-page',views.login_user,name='login'),
     path('log-out',views.Logout,name='log'),
+    path("All-Products",views.All_products_data , name="all_products")
 ]

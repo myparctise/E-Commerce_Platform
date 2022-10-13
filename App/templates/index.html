@@ -42,10 +42,10 @@ https://www.tooplate.com/view/2114-pixie
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Products</a>
+              <a class="nav-link" href="{% url 'all_products' %}">Products</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">About Us</a>
+              <a class="nav-link" href="#">About Us</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="contact.html">Contact Us</a>
@@ -83,8 +83,8 @@ https://www.tooplate.com/view/2114-pixie
             <div class="owl-carousel owl-theme">
               {% for i in data %}
               <a href="{% url 'products' i.slug %}">
-                <div class="featured-item">
-                  <img src="{{i.product_image.url}}" alt="Item 1">
+                <div class="featured-item" style="height:360px;">
+                  <img src="{{i.product_image.url}}" alt="Item 1" style="min-height: 220px;">
                   <h4>{{i.product_title}}</h4>
                   <h6>Rs {{i.product_price}}</h6>
                 </div>
