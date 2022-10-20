@@ -5,6 +5,9 @@
 <head>
 <title>Page Title</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 </head>
 <style>
 @import "compass/css3";
@@ -216,6 +219,7 @@ label {
 
 </style>
 <body>
+  {% include 'navbar.html' %}
 
     <h1>Shopping Cart</h1>
     <h2></h2>
@@ -242,7 +246,7 @@ label {
     </div>
     <div class="product-price"> {{details.product.product_price}}</div>
     <div class="product-quantity">
-      <input type="number" value="{{details.quantity}}" min="1">
+      <input type="number" value="{{details.quantity}}" id="{{details.id}}" onclick="myFunction(this.value,this.id)"  min="1" on>
     </div>
     <div class="product-removal">
       <a href="/remove_cart/{{details.id}}" class="remove-product">
@@ -250,8 +254,9 @@ label {
       </a>
     </div>
     <div class="product-line-price"> {{details.product.product_price|mul:details.quantity}}</div>
+
     
-    
+    {% csrf_token %}
     
     
   </div>
@@ -288,7 +293,7 @@ label {
       <label>Subtotal</label>
       <div class="totals-value" id="cart-subtotal"></div>
     </div>
-    <div class="totals-item">
+    <!--div class="totals-item">
       <label>Tax (5%)</label>
       <div class="totals-value" id="cart-tax"></div>
     </div>
@@ -299,10 +304,10 @@ label {
     <div class="totals-item totals-item-total">
       <label>Grand Total</label>
       <div class="totals-value" id="cart-total"></div>
-    </div>
+    </div-->
   </div>
-      
-      <button class="checkout">Checkout</button>
+       
+      <a href="{% url 'check' %}"><button type="button" class="checkout">Checkout</button></a>
 {% endif %}
 </div>
 
@@ -353,9 +358,10 @@ function recalculateCart()
   /* Update totals display */
   $('.totals-value').fadeOut(fadeTime, function() {
     $('#cart-subtotal').html(subtotal.toFixed(2));
-    $('#cart-tax').html(tax.toFixed(2));
+    /*$('#cart-tax').html(tax.toFixed(2));
     $('#cart-shipping').html(shipping.toFixed(2));
     $('#cart-total').html(total.toFixed(2));
+    */
     if(total == 0){
       $('.checkout').fadeOut(fadeTime);
     }else{
@@ -432,5 +438,28 @@ function removeItem(removeButton)
       //$('#cart-subtotal').html(tot)
   });
   </script>
+  
+
+<!-- this is used for update the quantity of particular product -->
+<script>
+  function myFunction(a,b){
+    console.log(a,b)
+    var csrf = $("input[name=csrfmiddlewaretoken").val()
+    console.log(csrf)
+    obj = {quantity:a, id:b, csrfmiddlewaretoken:csrf}
+
+    $.ajax({
+      url : "{% url 'quantity' %}",
+      type : "POST",
+      data : obj,
+      success: function(data){
+        console.log(data)
+      }
+    }
+    )
+  }
+ 
+</script>
+s
 
 </html>

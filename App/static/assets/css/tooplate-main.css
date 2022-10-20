@@ -437,6 +437,15 @@ a {
 	border-color: #3a8bcd;
 	color: #fff;
 }
+nav.navbar.navbar-light.bg-light {
+    margin-top: -65px;
+}
+
+form.form-inline {
+    margin-right: auto;
+    margin-left: auto;
+}
+
 
 
 

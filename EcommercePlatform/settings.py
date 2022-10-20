@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "rest_framework",
     'django_extensions',
     'mathfilters',
+    'django_filters',
+    'crispy_forms',
     
 
 ]
@@ -57,6 +59,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'EcommercePlatform.urls'
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 TEMPLATES = [
     {
@@ -133,3 +136,6 @@ MEDIA_URL = '/media/'                           # this line means images will be
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'App.MyUser'
+
+KEY = "rzp_test_UILOF6uMASGlV8"
+SECRET = "vYGgerFACr2gEGnQDtCUhjzg"

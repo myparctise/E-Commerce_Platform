@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img src="static/assets/images/header-logo.png" alt=""></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home' %}">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'all_products' %}">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact Us</a>
+          </li>
+        </ul>
+        {% if user.is_authenticated %}
+        <!-- <a href="{% url 'log' %}" class="btn btn-outline btn-success" style="text-align:right">logout</a>
+        <a href="{% url 'add_cart' %}" class="btn btn-danger p-1 m-1"  style="text-align:right">View Cart</a> -->
+
+
+
+
+        <div class="dropdown">
+          <span 
+                  class=" dropdown-toggle"
+                  data-toggle="dropdown">
+            
+       
+        <svg xmlns="http://www.w3.org/2000/svg"  width="22" height="22" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+        </svg>
+      </span>
+        <!-- <i class="bi bi-person dropdown-toggle"  data-toggle="dropdown"></i> -->
+          <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Dashboard</a>
+              <a class="dropdown-item" href="#">Change Password</a>
+              <a class="dropdown-item" href="{% url 'add_cart' %}">View cart</a>
+              <a class="dropdown-item" href="{% url 'log' %}">Logout</a>
+          </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+        {% else %}
+        <!-- <a href="{% url 'register' %}" style="text-align:right"><button type="button" >Sign up</button></a>
+        <a href="{% url 'login' %}" style="text-align:right"><button type="button" >Sign in</button></a> -->
+        <div class="dropdown">
+          <span 
+                  class=" dropdown-toggle"
+                  data-toggle="dropdown">
+            
+       
+        <svg xmlns="http://www.w3.org/2000/svg"  width="22" height="22" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+        </svg>
+      </span>
+        <!-- <i class="bi bi-person dropdown-toggle"  data-toggle="dropdown"></i> -->
+          <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+              <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+              <!-- <a class="dropdown-item" href="{% url 'log' %}">Login</a> -->
+          </div>
+      </div>
+        
+        {% endif %}
+      </div>
+    </div>
+    
+  </nav>

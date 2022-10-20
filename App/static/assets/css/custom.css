@@ -1,0 +1,5 @@
+.dropdown-toggle::after {
+    
+    margin-left: 0 !important;
+    vertical-align: 0 !important;
+}
