@@ -354,4 +354,22 @@
 </script>
 
 
+<script>
+  $(document).ready(function(){
+    $("#rzp-button1").click(function(){
+      var name = $("#firstName").val();
+      var lastname = $("#lastName").val();
+      var username = $("#username").val();
+      var email = $("#email").val();
+      var address = $("#address").val();
+      if ($("#address2").val != '') {
+        address2 = $(this).value();
+        console.log(address2)
+      } 
+
+    })
+  })
+</script>
+
+
 </html>
