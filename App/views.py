@@ -92,6 +92,10 @@ class UserProduct(viewsets.ViewSet):
 
 # Template Part start
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3bc7e9dcdf3fef66817eb3d87eb42fedaedbc74
 def home_Page(request):
     if request.method == 'GET':
         data = Product_details.objects.all()
